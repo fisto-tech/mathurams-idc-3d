@@ -131,10 +131,10 @@
       align-items: center;
       gap: 8px;
     }
-    .logo-mark {
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
+    .company-logo img {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
     }
     .logo-text-group {
       display: flex;
@@ -980,6 +980,9 @@
         content: 'Back';
         font-size: 11px;
       }
+      .company-logo img {
+        height: 22px;
+      }
     }
     @media (max-width: 360px) {
       .back-btn {
@@ -1032,7 +1035,7 @@
         </div>
       </div>
       <div class="company-logo">
-        <img src="images/logo.svg" alt="Sri Mathurams Medical Engineering Logo" style="height: 22px; width: auto; object-fit: contain;" />
+        <img src="images/logo.svg" alt="Sri Mathurams Medical Engineering Logo" />
       </div>
     </div>
     <input type="file" id="file-input" accept=".fbx,.glb,.gltf,.obj" />
@@ -1217,7 +1220,7 @@
     </div>
 
     <!-- Initial hint -->
-    <div id="initial-hint">
+    <!-- <div id="initial-hint">
       <svg class="hint-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="17 8 12 3 7 8"/>
@@ -1225,7 +1228,7 @@
       </svg>
       <h2>Drop a 3D bed model here</h2>
       <p>or click <strong>Load Model</strong> above</p>
-    </div>
+    </div> -->
 
     <!-- Drop zone overlay -->
     <div id="drop-zone">
