@@ -2,6 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    (function() {
+      const path = window.location.pathname;
+      let baseHref = '/';
+      const idx = path.toLowerCase().indexOf('/index.html');
+      if (idx !== -1) {
+        baseHref = path.substring(0, idx + 1);
+      }
+      const base = document.createElement('base');
+      base.href = baseHref;
+      document.head.appendChild(base);
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="/images/logo-icon.svg" />
   <title>3D Bed Product Configurator</title>
@@ -86,9 +99,13 @@
       cursor: pointer;
       transition: opacity 150ms ease;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .back-btn:hover {
       opacity: 0.9;
+    }
+    .back-btn-text {
+      display: inline;
     }
 
     .topbar-file-info {
@@ -948,6 +965,31 @@
       .card-grid.col-3 {
         grid-template-columns: repeat(auto-fill, minmax(95px, 110px));
       }
+      .product-title {
+        font-size: 12px;
+      }
+      .back-btn {
+        padding: 5px 10px;
+      }
+      .back-btn-text {
+        font-size: 0;
+      }
+      .back-btn-text::before {
+        content: 'Back';
+        font-size: 11px;
+      }
+    }
+    @media (max-width: 360px) {
+      .back-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        padding: 0;
+        justify-content: center;
+      }
+      .back-btn-text {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -958,11 +1000,11 @@
   <!-- Top Bar -->
   <header id="topbar">
     <div class="header-left">
-      <button class="back-btn" onclick="alert('Going back to product catalogue...')">← Back To Product</button>
+      <button class="back-btn" onclick="alert('Going back to product catalogue...')" title="Back to catalogue">← <span class="back-btn-text">Back To Product</span></button>
       <div class="topbar-file-info" id="file-label">No file loaded — <span>Drop 3D file to begin</span></div>
     </div>
     
-    <div class="product-title">Semi Fowler Cot</div>
+    <div class="product-title" id="product-title">Semi Fowler Cot</div>
     
     <div class="header-right">
       <button id="upload-btn">
@@ -988,7 +1030,7 @@
         </div>
       </div>
       <div class="company-logo">
-        <img src="images/logo.svg" alt="Sri Mathurams Medical Engineering Logo" style="height: 32px; width: auto; object-fit: contain;" />
+        <img src="images/logo.svg" alt="Sri Mathurams Medical Engineering Logo" style="height: 22px; width: auto; object-fit: contain;" />
       </div>
     </div>
     <input type="file" id="file-input" accept=".fbx,.glb,.gltf,.obj" />
@@ -1377,11 +1419,13 @@ gltfLoader.setDRACOLoader(dracoLoader);
 const objLoader  = new OBJLoader();
 
 // ── Load Model ───────────────────────────────────────────────────────────────
-function loadModel(file) {
+function loadModel(fileOrUrl, fileName) {
   const myGen = ++loadGeneration;
+  const isUrl = typeof fileOrUrl === 'string';
+  const url = isUrl ? fileOrUrl : URL.createObjectURL(fileOrUrl);
+  const name = isUrl ? (fileName || fileOrUrl.split('/').pop()) : fileOrUrl.name;
 
-  const url = URL.createObjectURL(file);
-  loadingName.textContent = file.name;
+  loadingName.textContent = name;
   loadingEl.classList.add('visible');
   initialHint.style.display = 'none';
 
@@ -1392,7 +1436,7 @@ function loadModel(file) {
   meshMap       = {};
   selectedMesh  = null;
 
-  const ext = file.name.split('.').pop().toLowerCase();
+  const ext = name.split('.').pop().toLowerCase();
   let activeLoader = null;
 
   if (ext === 'fbx') {
@@ -1402,14 +1446,14 @@ function loadModel(file) {
   } else if (ext === 'obj') {
     activeLoader = objLoader;
   } else {
-    URL.revokeObjectURL(url);
+    if (!isUrl) URL.revokeObjectURL(url);
     loadingEl.classList.remove('visible');
     showToast('Unsupported format');
     return;
   }
 
   activeLoader.load(url, (loadedObj) => {
-    URL.revokeObjectURL(url);
+    if (!isUrl) URL.revokeObjectURL(url);
 
     if (myGen !== loadGeneration) return;
 
@@ -1462,6 +1506,7 @@ function loadModel(file) {
 
     const box2      = new THREE.Box3().setFromObject(modelGroup);
     const sz2       = box2.getSize(new THREE.Vector3());
+    const maxSz     = Math.max(sz2.x, sz2.y, sz2.z);
 
     const footprint = Math.max(sz2.x, sz2.z, 1);
     const d = footprint * 1.5;
@@ -1473,7 +1518,6 @@ function loadModel(file) {
 
     // Fit camera
     const fov    = camera.fov * (Math.PI / 180);
-    const maxSz  = Math.max(sz2.x, sz2.y, sz2.z);
     const dist   = (maxSz / 2) / Math.tan(fov / 2) * 1.8;
     const target = box2.getCenter(new THREE.Vector3());
     camera.position.set(target.x + dist * 0.6, target.y + dist * 0.5, target.z + dist);
@@ -1487,19 +1531,19 @@ function loadModel(file) {
     buildMeshList();
     updateStats();
 
-    fileLabel.innerHTML = `Loaded: <span>${file.name}</span>`;
+    fileLabel.innerHTML = `Loaded: <span>${name}</span>`;
     infoBadge.classList.add('visible');
-    document.getElementById('badge-name').textContent  = file.name;
+    document.getElementById('badge-name').textContent  = name;
     document.getElementById('badge-stats').textContent =
       `${Object.keys(meshMap).length} meshes · ${Math.round(totalTris).toLocaleString()} tris`;
 
-    showToast(`Loaded "${file.name}"`);
+    showToast(`Loaded "${name}"`);
 
     // Apply configuration immediately
     applyCurrentConfig();
 
   }, undefined, (err) => {
-    URL.revokeObjectURL(url);
+    if (!isUrl) URL.revokeObjectURL(url);
     if (myGen !== loadGeneration) return;
     loadingEl.classList.remove('visible');
     console.error('Model load error:', err);
@@ -2174,8 +2218,53 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
 }
+
+// Load default model from root URL on page load
+let defaultModel = 'images/models/semi_fowler_cot-GLB1-optimized.glb';
+let productName = 'Semi Fowler Cot';
+
+// Parse query params or hash parameters for the model
+try {
+  const urlParams = new URLSearchParams(window.location.search);
+  const hashVal = window.location.hash.toLowerCase().replace('#', '');
+  const modelQuery = (urlParams.get('model') || hashVal || '').toLowerCase();
+  
+  if (modelQuery.includes('deluxe-double-door') || modelQuery.includes('deluxe_double_door')) {
+    defaultModel = 'images/models/Deluxe_double_door_attender_cot1-optimized.glb';
+    productName = 'Deluxe Double Door Attender Cot';
+  } else if (modelQuery.includes('attender-cot-deluxe') || modelQuery.includes('attender_cot_deluxe')) {
+    defaultModel = 'images/models/Attender_cot_deluxe1-optimized.glb';
+    productName = 'Attender Cot Deluxe';
+  } else if (modelQuery.includes('attender-cot-plain') || modelQuery.includes('attender_cot_plain')) {
+    defaultModel = 'images/models/attender_cot_plain1-optimized.glb';
+    productName = 'Attender Cot Plain';
+  } else if (modelQuery.includes('bedside-locker-deluxe-wood') || modelQuery.includes('bed_sidelocker_deluxe_wood') || modelQuery.includes('sidelocker-deluxe')) {
+    defaultModel = 'images/models/Bed_sidelocker_deluxe_wood1-optimized.glb';
+    productName = 'Bed Sidelocker Deluxe Wood';
+  } else if (modelQuery.includes('bedside-locker-plain') || modelQuery.includes('bedside_locker _plain') || modelQuery.includes('locker-plain')) {
+    defaultModel = 'images/models/bedside_locker _plain-optimized.glb';
+    productName = 'Bedside Locker Plain';
+  } else if (modelQuery.includes('semi-fowler') || modelQuery.includes('semi_fowler')) {
+    defaultModel = 'images/models/semi_fowler_cot-GLB1-optimized.glb';
+    productName = 'Semi Fowler Cot';
+  }
+} catch (e) {
+  console.warn('URL parsing fallback:', e);
+}
+
+// Update the top-bar title dynamically
+const titleEl = document.getElementById('product-title');
+if (titleEl) {
+  titleEl.textContent = productName;
+}
+
+loadModel(defaultModel);
+
+// Listen to hash changes and reload model context dynamically
+window.addEventListener('hashchange', () => {
+  window.location.reload();
+});
 </script>
 
 </body>
