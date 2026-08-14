@@ -9,6 +9,8 @@
       const idx = path.toLowerCase().indexOf('/index.html');
       if (idx !== -1) {
         baseHref = path.substring(0, idx + 1);
+      } else {
+        baseHref = path.endsWith('/') ? path : path.substring(0, path.lastIndexOf('/') + 1);
       }
       const base = document.createElement('base');
       base.href = baseHref;
@@ -16,7 +18,7 @@
     })();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="/images/logo-icon.svg" />
+  <link rel="icon" href="images/logo-icon.svg" />
   <title>3D Bed Product Configurator</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -1522,6 +1524,10 @@ function loadModel(fileOrUrl, fileName) {
     const target = box2.getCenter(new THREE.Vector3());
     camera.position.set(target.x + dist * 0.6, target.y + dist * 0.5, target.z + dist);
     controls.target.copy(target);
+
+    // Limit zoom out distance to 100% of the initial view
+    controls.maxDistance = camera.position.distanceTo(target);
+
     controls.update();
     defaultCamPos    = camera.position.clone();
     defaultCamTarget = target.clone();
