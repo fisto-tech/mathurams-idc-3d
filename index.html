@@ -1044,7 +1044,7 @@
   <!-- Left Configuration Panel -->
   <aside id="sidebar-config">
     <!-- A. Head & Foot Panel -->
-    <div class="config-section">
+    <div class="config-section" id="config-section-headfoot">
       <div class="config-section-title">A. Head & Foot End Panel</div>
       <div class="card-grid col-3">
         <div class="config-card active" data-section="headfoot" data-value="ms">
@@ -1057,16 +1057,44 @@
           <img src="images/ss-plain-icon.webp" alt="SS" />
           <span>SS Panel</span>
         </div>
-        <div class="config-card" data-section="headfoot" data-value="abs">
+        <div class="config-card" data-section="headfoot" data-value="abs1">
           <div class="selection-indicator"></div>
-          <img src="images/abs-icon.webp" alt="ABS" />
-          <span>ABS Panel</span>
+          <img src="images/abs-icon.webp" alt="ABS 1" />
+          <span>ABS 1 Panel</span>
+        </div>
+        <div class="config-card" data-section="headfoot" data-value="abs2">
+          <div class="selection-indicator"></div>
+          <img src="images/abs-icon.webp" alt="ABS 2" />
+          <span>ABS 2 Panel</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABS Panel Color Option Section -->
+    <div class="config-section" id="abs-panel-color-section" style="display: none;">
+      <div class="config-section-subtitle" style="margin-top: 0;">ABS Panel Color Option</div>
+      <div class="color-row" id="abs-panel-color-row">
+        <button class="color-swatch abs-panel-color active" data-color="#0066cc" style="background-color: #0066cc; color: #FFFFFF;" title="Blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch abs-panel-color" data-color="#0D9488" style="background-color: #0D9488; color: #FFFFFF;" title="Teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch abs-panel-color" data-color="#EA580C" style="background-color: #EA580C; color: #FFFFFF;" title="Orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch abs-panel-color" data-color="#4B5563" style="background-color: #4B5563; color: #FFFFFF;" title="Gray">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <div class="color-swatch abs-panel-color" id="abs-panel-custom-swatch" data-color="#0066cc" style="background: conic-gradient(from 0deg, red, yellow, lime, aqua, blue, magenta, red);" title="Custom Color">
+          <input type="color" id="abs-panel-custom-picker" style="position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; border-radius: 50%;" value="#0066cc" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 0px 2px rgba(0,0,0,0.8));"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </div>
       </div>
     </div>
 
     <!-- B. Side Rails -->
-    <div class="config-section">
+    <div class="config-section" id="config-section-siderails">
       <div class="config-section-title">B. Side Rails</div>
       <div class="card-grid col-3">
         <div class="config-card active" data-section="siderails" data-value="ms">
@@ -1097,8 +1125,31 @@
       </div>
     </div>
 
+    <!-- ABS Rail Color Option Section -->
+    <div class="config-section" id="abs-rail-color-section" style="display: none;">
+      <div class="config-section-subtitle" style="margin-top: 0;">ABS Rail Color Option</div>
+      <div class="color-row" id="abs-rail-color-row">
+        <button class="color-swatch abs-rail-color active" data-color="#0066cc" style="background-color: #0066cc; color: #FFFFFF;" title="Blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch abs-rail-color" data-color="#0D9488" style="background-color: #0D9488; color: #FFFFFF;" title="Teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch abs-rail-color" data-color="#EA580C" style="background-color: #EA580C; color: #FFFFFF;" title="Orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch abs-rail-color" data-color="#4B5563" style="background-color: #4B5563; color: #FFFFFF;" title="Gray">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <div class="color-swatch abs-rail-color" id="abs-rail-custom-swatch" data-color="#0066cc" style="background: conic-gradient(from 0deg, red, yellow, lime, aqua, blue, magenta, red);" title="Custom Color">
+          <input type="color" id="abs-rail-custom-picker" style="position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; border-radius: 50%;" value="#0066cc" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 0px 2px rgba(0,0,0,0.8));"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+    </div>
+
     <!-- C. Mattress Type -->
-    <div class="config-section">
+    <div class="config-section" id="config-section-mattress">
       <div class="config-section-title">C. Mattress Type</div>
       <div class="radio-group">
         <label class="radio-option">
@@ -1114,23 +1165,92 @@
       </div>
       <div class="config-section-subtitle">Mattress Color Option</div>
       <div class="color-row" id="mattress-color-row">
-        <button class="color-swatch mattress-color active" data-color="#2563EB" style="background-color: #2563EB; color: #FFFFFF;" title="Blue">
+        <button class="color-swatch mattress-color active" data-color="#6F4E37" style="background-color: #6F4E37; color: #FFFFFF;" title="#6F4E37">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </button>
-        <button class="color-swatch mattress-color" data-color="#0D9488" style="background-color: #0D9488; color: #FFFFFF;" title="Dark teal">
+        <button class="color-swatch mattress-color" data-color="#4E342E" style="background-color: #4E342E; color: #FFFFFF;" title="#4E342E">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </button>
-        <button class="color-swatch mattress-color" data-color="#94A3B8" style="background-color: #94A3B8; color: #1E293B;" title="Light gray">
+        <button class="color-swatch mattress-color" data-color="#5BC0EB" style="background-color: #5BC0EB; color: #1E293B;" title="#5BC0EB">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </button>
-        <button class="color-swatch mattress-color" data-color="#F5E0C3" style="background-color: #F5E0C3; color: #1E293B;" title="Beige">
+        <button class="color-swatch mattress-color" data-color="#0056A6" style="background-color: #0056A6; color: #FFFFFF;" title="#0056A6">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </button>
-        <button class="color-swatch mattress-color" data-color="#FFFFFF" style="background-color: #FFFFFF; border: 1px solid #cbd5e1; color: #1E293B;" title="White">
+        <button class="color-swatch mattress-color" data-color="#009A44" style="background-color: #009A44; color: #FFFFFF;" title="#009A44">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </button>
-        <div class="color-swatch mattress-color" id="mattress-custom-swatch" data-color="#E2E8F0" style="background: conic-gradient(from 0deg, red, yellow, lime, aqua, blue, magenta, red);" title="Custom Color">
-          <input type="color" id="mattress-custom-picker" style="position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; border-radius: 50%;" value="#E2E8F0" />
+        <button class="color-swatch mattress-color" data-color="#B8D8A3" style="background-color: #B8D8A3; color: #1E293B;" title="#B8D8A3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch mattress-color" data-color="#50C878" style="background-color: #50C878; color: #FFFFFF;" title="#50C878">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch mattress-color" data-color="#A7A9AC" style="background-color: #A7A9AC; color: #1E293B;" title="#A7A9AC">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch mattress-color" data-color="#4A4F54" style="background-color: #4A4F54; color: #FFFFFF;" title="#4A4F54">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch mattress-color" data-color="#F57C00" style="background-color: #F57C00; color: #FFFFFF;" title="#F57C00">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch mattress-color" data-color="#FFD400" style="background-color: #FFD400; color: #1E293B;" title="#FFD400">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch mattress-color" data-color="#000000" style="background-color: #000000; color: #FFFFFF;" title="#000000">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch mattress-color" data-color="#6A1B9A" style="background-color: #6A1B9A; color: #FFFFFF;" title="#6A1B9A">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch mattress-color" data-color="#E8DCC5" style="background-color: #E8DCC5; color: #1E293B;" title="#E8DCC5">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Couch Cabinet Color Option Section -->
+    <div class="config-section" id="couch-cabinet-color-section" style="display: none;">
+      <div class="config-section-subtitle" style="margin-top: 0;">Cabinet Color Option</div>
+      <div class="color-row" id="couch-cabinet-color-row">
+        <button class="color-swatch couch-cabinet-color active" data-color="#F5E0C3" style="background-color: #F5E0C3; color: #1E293B;" title="Beige">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch couch-cabinet-color" data-color="#0066cc" style="background-color: #0066cc; color: #FFFFFF;" title="Blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch couch-cabinet-color" data-color="#0D9488" style="background-color: #0D9488; color: #FFFFFF;" title="Teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch couch-cabinet-color" data-color="#4B5563" style="background-color: #4B5563; color: #FFFFFF;" title="Gray">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <div class="color-swatch couch-cabinet-color" id="couch-cabinet-custom-swatch" data-color="#F5E0C3" style="background: conic-gradient(from 0deg, red, yellow, lime, aqua, blue, magenta, red);" title="Custom Color">
+          <input type="color" id="couch-cabinet-custom-picker" style="position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; border-radius: 50%;" value="#F5E0C3" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 0px 2px rgba(0,0,0,0.8));"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Couch Drawer Color Option Section -->
+    <div class="config-section" id="couch-drawer-color-section" style="display: none;">
+      <div class="config-section-subtitle" style="margin-top: 0;">Drawer Color Option</div>
+      <div class="color-row" id="couch-drawer-color-row">
+        <button class="color-swatch couch-drawer-color active" data-color="#FFFFFF" style="background-color: #FFFFFF; border: 1px solid #cbd5e1; color: #1E293B;" title="White">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch couch-drawer-color" data-color="#0066cc" style="background-color: #0066cc; color: #FFFFFF;" title="Blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch couch-drawer-color" data-color="#0D9488" style="background-color: #0D9488; color: #FFFFFF;" title="Teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <button class="color-swatch couch-drawer-color" data-color="#4B5563" style="background-color: #4B5563; color: #FFFFFF;" title="Gray">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+        <div class="color-swatch couch-drawer-color" id="couch-drawer-custom-swatch" data-color="#FFFFFF" style="background: conic-gradient(from 0deg, red, yellow, lime, aqua, blue, magenta, red);" title="Custom Color">
+          <input type="color" id="couch-drawer-custom-picker" style="position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; border-radius: 50%;" value="#FFFFFF" />
           <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 0px 2px rgba(0,0,0,0.8));"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </div>
       </div>
@@ -1138,7 +1258,7 @@
 
 
     <!-- D. Wheel Type -->
-    <div class="config-section">
+    <div class="config-section" id="config-section-wheel">
       <div class="config-section-title">D. Wheel Type</div>
       <div class="radio-group">
         <label class="radio-option">
@@ -1155,7 +1275,7 @@
     </div>
 
     <!-- E. Operation -->
-    <div class="config-section">
+    <div class="config-section" id="config-section-operation">
       <div class="config-section-title">E. Operation</div>
       <div class="radio-group">
         <label class="radio-option">
@@ -1361,6 +1481,34 @@ const fillLight = new THREE.DirectionalLight(0x4080ff, 0.35);
 fillLight.position.set(-5, 2, -5);
 scene.add(fillLight);
 
+// ── Environment Map ─────────────────────────────────────────────────────────
+(function createDefaultEnvMap() {
+  const envScene = new THREE.Scene();
+  
+  const ambient = new THREE.AmbientLight(0xffffff, 1.5);
+  envScene.add(ambient);
+  
+  const light1 = new THREE.DirectionalLight(0xffffff, 5);
+  light1.position.set(10, 20, 10);
+  envScene.add(light1);
+  
+  const light2 = new THREE.DirectionalLight(0xffffff, 3);
+  light2.position.set(-10, 10, -10);
+  envScene.add(light2);
+
+  const light3 = new THREE.DirectionalLight(0xffffff, 2);
+  light3.position.set(0, -10, 0);
+  envScene.add(light3);
+
+  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  pmremGenerator.compileEquirectangularShader();
+  
+  const envMap = pmremGenerator.fromScene(envScene).texture;
+  scene.environment = envMap;
+  
+  pmremGenerator.dispose();
+})();
+
 // ── Solid Floor ──────────────────────────────────────────────────────────────
 let floorColor = 0xFFFFFF;
 const floorGeo = new THREE.PlaneGeometry(1000, 1000);
@@ -1378,6 +1526,7 @@ const axesHelper = new THREE.AxesHelper(1);
 
 // ── State ────────────────────────────────────────────────────────────────────
 let currentModel    = null;
+let currentModelName = '';
 let meshMap         = {};        // key → { mesh, visible, name, triCount }
 let defaultCamPos   = null;
 let defaultCamTarget = null;
@@ -1429,6 +1578,34 @@ function loadModel(fileOrUrl, fileName) {
   const isUrl = typeof fileOrUrl === 'string';
   const url = isUrl ? fileOrUrl : URL.createObjectURL(fileOrUrl);
   const name = isUrl ? (fileName || fileOrUrl.split('/').pop()) : fileOrUrl.name;
+  currentModelName = name;
+
+  // Dynamically update product name based on loaded model
+  const lowerName = name.toLowerCase();
+  if (lowerName.includes('icu')) {
+    productName = 'ICU Cot';
+  } else if (lowerName.includes('deluxe-double-door') || lowerName.includes('deluxe_double_door')) {
+    productName = 'Deluxe Double Door Attender Cot';
+  } else if (lowerName.includes('attender_cot_deluxe') || lowerName.includes('attender-cot-deluxe')) {
+    productName = 'Attender Cot Deluxe';
+  } else if (lowerName.includes('attender_cot_plain') || lowerName.includes('attender-cot-plain')) {
+    productName = 'Attender Cot Plain';
+  } else if (lowerName.includes('sidelocker_deluxe') || lowerName.includes('sidelocker-deluxe')) {
+    productName = 'Bed Sidelocker Deluxe Wood';
+  } else if (lowerName.includes('locker_plain') || lowerName.includes('locker-plain')) {
+    productName = 'Bedside Locker Plain';
+  } else if (lowerName.includes('semi_fowler') || lowerName.includes('semi-fowler')) {
+    productName = 'Semi Fowler Cot';
+  } else if (lowerName.includes('hi-lo') || lowerName.includes('hi_lo') || lowerName.includes('hilo')) {
+    productName = 'Hi-Lo Structure';
+  } else if (lowerName.includes('couch') || lowerName.includes('examination')) {
+    productName = 'Deluxe Examination Couch';
+  }
+
+  const titleEl = document.getElementById('product-title');
+  if (titleEl) {
+    titleEl.textContent = productName;
+  }
 
   loadingName.textContent = name;
   loadingEl.classList.add('visible');
@@ -1471,15 +1648,12 @@ function loadModel(fileOrUrl, fileName) {
 
     currentModel = modelGroup;
 
-    // Normalise scale
-    const box    = new THREE.Box3().setFromObject(modelGroup);
-    const size   = box.getSize(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const scale  = maxDim > 0 ? 5 / maxDim : 1;
+    // Keep original scale/measurements (do not normalise scale)
+    const scale  = 1;
     modelGroup.scale.setScalar(scale);
 
     // Centre on ground plane
-    box.setFromObject(modelGroup);
+    const box    = new THREE.Box3().setFromObject(modelGroup);
     const centre = box.getCenter(new THREE.Vector3());
     modelGroup.position.sub(centre);
     box.setFromObject(modelGroup);
@@ -1502,9 +1676,16 @@ function loadModel(fileOrUrl, fileName) {
         totalTris += triCount;
       }
 
-      const rawName = child.name || `Mesh`;
-      const key     = `${rawName}_${Object.keys(meshMap).length}`;
-      meshMap[key] = { mesh: child, visible: true, name: rawName, triCount };
+      const parentName = (child.parent && child.parent.name && child.parent.name !== 'Scene' && child.parent.name !== 'RootNode') ? child.parent.name : '';
+      const rawName = parentName || child.name || `Mesh`;
+      const key     = rawName;
+      
+      if (meshMap[key]) {
+        meshMap[key].meshes.push(child);
+        meshMap[key].triCount += triCount;
+      } else {
+        meshMap[key] = { meshes: [child], visible: true, name: rawName, triCount };
+      }
     });
 
     scene.add(modelGroup);
@@ -1548,6 +1729,44 @@ function loadModel(fileOrUrl, fileName) {
 
     showToast(`Loaded "${name}"`);
 
+    // Hide/show sections dynamically based on model type
+    const isIcu = name.toLowerCase().includes('icu') || productName === 'ICU Cot';
+    const isCouch = name.toLowerCase().includes('couch') || name.toLowerCase().includes('examination') || productName === 'Deluxe Examination Couch';
+    
+    const sectionHeadFoot = document.getElementById('config-section-headfoot');
+    const sectionSideRails = document.getElementById('config-section-siderails');
+    const sectionMattress = document.getElementById('config-section-mattress');
+    const sectionWheel = document.getElementById('config-section-wheel');
+    const sectionOperation = document.getElementById('config-section-operation');
+
+    if (isCouch) {
+      if (sectionHeadFoot) sectionHeadFoot.style.display = 'none';
+      if (sectionSideRails) sectionSideRails.style.display = 'none';
+      if (sectionWheel) sectionWheel.style.display = 'none';
+      if (sectionOperation) sectionOperation.style.display = 'none';
+      
+      const mattressRadioGroup = sectionMattress?.querySelector('.radio-group');
+      if (mattressRadioGroup) mattressRadioGroup.style.display = 'none';
+      const mattressTitle = sectionMattress?.querySelector('.config-section-title');
+      if (mattressTitle) mattressTitle.style.display = 'none';
+    } else {
+      if (sectionHeadFoot) sectionHeadFoot.style.display = 'flex';
+      if (sectionSideRails) sectionSideRails.style.display = 'flex';
+      if (sectionWheel) sectionWheel.style.display = isIcu ? 'none' : 'flex';
+      if (sectionOperation) sectionOperation.style.display = 'flex';
+      
+      const mattressRadioGroup = sectionMattress?.querySelector('.radio-group');
+      if (mattressRadioGroup) mattressRadioGroup.style.display = 'flex';
+      const mattressTitle = sectionMattress?.querySelector('.config-section-title');
+      if (mattressTitle) mattressTitle.style.display = 'block';
+    }
+
+    // Automatically update heading serial letters (A, B, C, D, etc.) dynamically based on visibility
+    updateSectionHeadings();
+
+    // Set default configuration for the loaded model
+    setDefaultConfigForModel(name);
+
     // Apply configuration immediately
     applyCurrentConfig();
 
@@ -1557,6 +1776,29 @@ function loadModel(fileOrUrl, fileName) {
     loadingEl.classList.remove('visible');
     console.error('Model load error:', err);
     showToast('Failed to load model');
+  });
+}
+
+function updateSectionHeadings() {
+  const sections = [
+    { id: 'config-section-headfoot', baseText: 'Head & Foot End Panel' },
+    { id: 'config-section-siderails', baseText: 'Side Rails' },
+    { id: 'config-section-mattress', baseText: 'Mattress Type' },
+    { id: 'config-section-wheel', baseText: 'Wheel Type' },
+    { id: 'config-section-operation', baseText: 'Operation' }
+  ];
+
+  let currentLetterCode = 65; // 'A'
+  sections.forEach(sec => {
+    const el = document.getElementById(sec.id);
+    if (el && el.style.display !== 'none') {
+      const titleEl = el.querySelector('.config-section-title');
+      if (titleEl && titleEl.style.display !== 'none') {
+        const letter = String.fromCharCode(currentLetterCode);
+        titleEl.textContent = `${letter}. ${sec.baseText}`;
+        currentLetterCode++;
+      }
+    }
   });
 }
 
@@ -1636,7 +1878,7 @@ function buildMeshList(filter = '') {
       const finishRename = () => {
         const newName = input.value.trim() || currentName;
         entry.name = newName;
-        entry.mesh.name = newName;
+        entry.meshes.forEach(m => { m.name = newName; });
 
         const newLabelSpan = document.createElement('span');
         newLabelSpan.className = 'mesh-label';
@@ -1675,12 +1917,13 @@ function toggleMesh(key, visible) {
   const entry      = meshMap[key];
   if (!entry) return;
   entry.visible    = visible;
-  entry.mesh.visible = visible;
-
-  if (entry.mesh.material) {
-    const mats = Array.isArray(entry.mesh.material) ? entry.mesh.material : [entry.mesh.material];
-    mats.forEach(m => { m.wireframe = visible ? wireframeMode : false; });
-  }
+  entry.meshes.forEach(mesh => {
+    mesh.visible = visible;
+    if (mesh.material) {
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      mats.forEach(m => { m.wireframe = visible ? wireframeMode : false; });
+    }
+  });
 
   const item = meshListEl.querySelector(`[data-key="${key}"]`);
   if (item) {
@@ -1705,7 +1948,10 @@ function focusMesh(key, itemEl, forceSelect = false) {
   itemEl.classList.add('active');
 
   const entry = meshMap[key];
-  const box   = new THREE.Box3().setFromObject(entry.mesh);
+  const box   = new THREE.Box3();
+  entry.meshes.forEach(mesh => {
+    box.expandByObject(mesh);
+  });
 
   if (box.isEmpty()) return;
 
@@ -1726,16 +1972,6 @@ function focusMesh(key, itemEl, forceSelect = false) {
   controls.target.copy(centre);
   camera.position.copy(centre).addScaledVector(dir, dist);
   controls.update();
-
-  // If a color is active, paint it!
-  const activeColor = document.querySelector('.color-swatch:not(.mattress-color).active')?.dataset.color;
-  if (activeColor) {
-    applyColorToMeshes(activeColor);
-  }
-  const activeMattressColor = document.querySelector('.color-swatch.mattress-color.active')?.dataset.color;
-  if (activeMattressColor) {
-    applyMattressColor(activeMattressColor);
-  }
 }
 
 // ── Stats ────────────────────────────────────────────────────────────────────
@@ -1749,6 +1985,79 @@ function updateStats() {
   document.getElementById('stat-tris').textContent = tris > 0 ? Math.round(tris).toLocaleString() : '—';
 }
 
+// ── Set default configuration based on model ──────────────────────────────────
+function setDefaultConfigForModel(name) {
+  const lower = name.toLowerCase();
+  
+  // Define defaults per model
+  let defaults = {
+    headfoot: 'ms',
+    siderails: 'ms',
+    mattress: 'zip',
+    wheel: 'without',
+    operation: 'manual'
+  };
+
+  if (lower.includes('icu')) {
+    defaults = {
+      headfoot: 'ms',
+      siderails: 'ms',
+      mattress: 'zip',
+      wheel: 'wheel',
+      operation: 'remote'
+    };
+  } else if (lower.includes('semi_fowler') || lower.includes('semi-fowler')) {
+    defaults = {
+      headfoot: 'ms',
+      siderails: 'ms',
+      mattress: 'zip',
+      wheel: 'without',
+      operation: 'manual'
+    };
+  } else if (lower.includes('hi-lo') || lower.includes('hi_lo') || lower.includes('hilo')) {
+    defaults = {
+      headfoot: 'ms',
+      siderails: 'ms',
+      mattress: 'zip',
+      wheel: 'wheel',
+      operation: 'remote'
+    };
+  } else if (lower.includes('couch') || lower.includes('examination')) {
+    defaults = {
+      headfoot: 'ms',
+      siderails: 'ms',
+      mattress: 'plain',
+      wheel: 'without',
+      operation: 'manual'
+    };
+  } else if (lower.includes('attender_cot_deluxe') || lower.includes('attender-cot-deluxe')) {
+    defaults = {
+      headfoot: 'ss',
+      siderails: 'ssplain',
+      mattress: 'plain',
+      wheel: 'without',
+      operation: 'manual'
+    };
+  }
+
+  // Update UI active states to match defaults
+  document.querySelectorAll('.config-card[data-section="headfoot"]').forEach(card => {
+    card.classList.toggle('active', card.dataset.value === defaults.headfoot);
+  });
+  document.querySelectorAll('.config-card[data-section="siderails"]').forEach(card => {
+    card.classList.toggle('active', card.dataset.value === defaults.siderails);
+  });
+  
+  const mattressRadio = document.querySelector(`input[name="mattress"][value="${defaults.mattress}"]`);
+  if (mattressRadio) mattressRadio.checked = true;
+  
+  const wheelRadio = document.querySelector(`input[name="wheel"][value="${defaults.wheel}"]`);
+  if (wheelRadio) wheelRadio.checked = true;
+  
+  const operationRadio = document.querySelector(`input[name="operation"][value="${defaults.operation}"]`);
+  if (operationRadio) operationRadio.checked = true;
+}
+
 // ── Configuration Logic ──────────────────────────────────────────────────────
 function applyCurrentConfig() {
   if (!currentModel) return;
@@ -1758,8 +2067,29 @@ function applyCurrentConfig() {
   const mattress = document.querySelector('input[name="mattress"]:checked')?.value || 'zip';
   const wheel = document.querySelector('input[name="wheel"]:checked')?.value || 'without';
   const operation = document.querySelector('input[name="operation"]:checked')?.value || 'manual';
-  const activeColor = document.querySelector('.color-swatch:not(.mattress-color).active')?.dataset.color || '#2563EB';
-  const activeMattressColor = document.querySelector('.color-swatch.mattress-color.active')?.dataset.color || '#2563EB';
+  const activeColor = document.querySelector('.color-swatch:not(.mattress-color):not(.abs-panel-color):not(.abs-rail-color):not(.couch-cabinet-color):not(.couch-drawer-color).active')?.dataset.color;
+  const activeMattressColor = document.querySelector('.color-swatch.mattress-color.active')?.dataset.color;
+
+  // Show/hide ABS Panel color section based on ABS Panel selection
+  const isAbsPanelSelected = (headfoot === 'abs' || headfoot === 'abs1' || headfoot === 'abs2');
+  const absPanelColorSection = document.getElementById('abs-panel-color-section');
+  if (absPanelColorSection) {
+    absPanelColorSection.style.display = isAbsPanelSelected ? 'flex' : 'none';
+  }
+
+  // Show/hide ABS Rail color section based on ABS Rail selection
+  const isAbsRailSelected = (siderails === 'abs');
+  const absRailColorSection = document.getElementById('abs-rail-color-section');
+  if (absRailColorSection) {
+    absRailColorSection.style.display = isAbsRailSelected ? 'flex' : 'none';
+  }
+
+  // Show/hide Couch Cabinet and Drawer color sections dynamically
+  const isCouch = currentModelName.toLowerCase().includes('couch') || currentModelName.toLowerCase().includes('examination') || productName === 'Deluxe Examination Couch';
+  const couchCabinetSection = document.getElementById('couch-cabinet-color-section');
+  const couchDrawerSection = document.getElementById('couch-drawer-color-section');
+  if (couchCabinetSection) couchCabinetSection.style.display = isCouch ? 'flex' : 'none';
+  if (couchDrawerSection) couchDrawerSection.style.display = isCouch ? 'flex' : 'none';
 
   Object.keys(meshMap).forEach(key => {
     const entry = meshMap[key];
@@ -1772,41 +2102,49 @@ function applyCurrentConfig() {
         if (name.includes('s3') || name.includes('ss') || name.includes('abs')) visible = false;
       } else if (headfoot === 'ss') {
         if (name.includes('m1') || name.includes('ms') || name.includes('abs')) visible = false;
-      } else if (headfoot === 'abs') {
+      } else if (headfoot === 'abs' || headfoot === 'abs1') {
         if (name.includes('m1') || name.includes('ms') || name.includes('s3') || name.includes('ss')) visible = false;
+        if (name.includes('abs') && (name.includes('2') || name.includes('abs-2') || name.includes('abs2') || name.includes('abs_2'))) visible = false;
+      } else if (headfoot === 'abs2') {
+        if (name.includes('m1') || name.includes('ms') || name.includes('s3') || name.includes('ss')) visible = false;
+        if (name.includes('abs') && !(name.includes('2') || name.includes('abs-2') || name.includes('abs2') || name.includes('abs_2'))) visible = false;
       }
     }
 
     // Side Rails matching
-    const isRailMesh = name.includes('rail') || name.includes('side') || name.includes('collapsible') || name.includes('colapsable');
+    const isRailMesh = name.includes('rail') || name.includes('side') || name.includes('collapsible') || name.includes('colapsable') || name.includes('ac-') || name.includes('ac_');
     if (isRailMesh) {
+      const isAlum = name.includes('aluminium') || name.includes('ac-') || name.includes('ac_') || name.includes('ac siderailings');
+      
       if (siderails === 'ms') {
-        if (name.includes('ss') || name.includes('abs') || name.includes('aluminium') || name.includes('collapsible') || name.includes('colapsable')) visible = false;
+        if (name.includes('ss') || name.includes('abs') || isAlum || name.includes('collapsible') || name.includes('colapsable')) visible = false;
       } else if (siderails === 'ssplain') {
-        if (name.includes('ms') || name.includes('abs') || name.includes('aluminium') || name.includes('collapsible') || name.includes('colapsable')) visible = false;
+        if (name.includes('ms') || name.includes('abs') || isAlum || name.includes('collapsible') || name.includes('colapsable')) visible = false;
       } else if (siderails === 'abs') {
-        if (name.includes('ms') || name.includes('ss') || name.includes('aluminium') || name.includes('collapsible') || name.includes('colapsable')) visible = false;
+        if (name.includes('ms') || name.includes('ss') || isAlum || name.includes('collapsible') || name.includes('colapsable')) visible = false;
       } else if (siderails === 'aluminium') {
-        if (name.includes('ms') || name.includes('abs') || name.includes('ss') || !name.includes('aluminium')) visible = false;
+        if (name.includes('ms') || name.includes('abs') || name.includes('ss') || !isAlum) visible = false;
       } else if (siderails === 'sscollapsible') {
-        if (name.includes('ms') || name.includes('abs') || name.includes('aluminium')) visible = false;
+        if (name.includes('ms') || name.includes('abs') || isAlum) visible = false;
         if (name.includes('ss') && !name.includes('collapsible') && !name.includes('colapsable')) visible = false;
         if (!name.includes('ss')) visible = false;
       }
     }
 
     // Mattress matching
-    if (name.includes('mattress')) {
+    if (name.includes('mattress') || name.includes('mattres') || name.includes('zipper') || name.includes('zip') || name.includes('cube.020') || name.includes('plain')) {
       if (mattress === 'zip') {
         if (name.includes('plain')) visible = false;
       } else if (mattress === 'plain') {
-        if (name.includes('zip')) visible = false;
+        if (name.includes('zip') || name.includes('zipper') || name.includes('cube.020')) visible = false;
       }
     }
 
     // Wheels matching
     if (name.includes('wheel') || name.includes('castor') || name.includes('caster')) {
-      if (wheel === 'without') visible = false;
+      const isIcu = (currentModelName && currentModelName.toLowerCase().includes('icu')) || productName === 'ICU Cot';
+      const isCouch = (currentModelName && currentModelName.toLowerCase().includes('couch')) || productName === 'Deluxe Examination Couch';
+      if (wheel === 'without' && !isIcu && !isCouch) visible = false;
     }
 
     // Operation matching
@@ -1821,8 +2159,30 @@ function applyCurrentConfig() {
     toggleMesh(key, visible);
   });
 
-  applyColorToMeshes(activeColor);
-  applyMattressColor(activeMattressColor);
+  if (activeColor) applyColorToMeshes(activeColor);
+  if (activeMattressColor) applyMattressColor(activeMattressColor);
+  if (isAbsPanelSelected) {
+    const activeAbsPanelColor = document.querySelector('.color-swatch.abs-panel-color.active')?.dataset.color;
+    if (activeAbsPanelColor) {
+      applyAbsPanelColor(activeAbsPanelColor);
+    }
+  }
+  if (isAbsRailSelected) {
+    const activeAbsRailColor = document.querySelector('.color-swatch.abs-rail-color.active')?.dataset.color;
+    if (activeAbsRailColor) {
+      applyAbsRailColor(activeAbsRailColor);
+    }
+  }
+  if (isCouch) {
+    const activeCouchCabinetColor = document.querySelector('.color-swatch.couch-cabinet-color.active')?.dataset.color;
+    if (activeCouchCabinetColor) {
+      applyCouchCabinetColor(activeCouchCabinetColor);
+    }
+    const activeCouchDrawerColor = document.querySelector('.color-swatch.couch-drawer-color.active')?.dataset.color;
+    if (activeCouchDrawerColor) {
+      applyCouchDrawerColor(activeCouchDrawerColor);
+    }
+  }
 }
 
 function applyColorToMeshes(hexColorStr) {
@@ -1830,7 +2190,7 @@ function applyColorToMeshes(hexColorStr) {
   const hex = parseInt(hexColorStr.replace('#', '0x'), 16);
 
   if (selectedMesh && meshMap[selectedMesh]) {
-    setColorOnMesh(meshMap[selectedMesh].mesh, hex);
+    meshMap[selectedMesh].meshes.forEach(mesh => setColorOnMesh(mesh, hex));
     return;
   }
 
@@ -1839,7 +2199,7 @@ function applyColorToMeshes(hexColorStr) {
     const entry = meshMap[key];
     const name = entry.name.toLowerCase();
     if (entry.visible && !name.includes('mattress') && (name.includes('panel') || name.includes('rail') || name.includes('frame') || name.includes('board') || name.includes('head') || name.includes('foot') || name.includes('body') || name.includes('support'))) {
-      setColorOnMesh(entry.mesh, hex);
+      entry.meshes.forEach(mesh => setColorOnMesh(mesh, hex));
     }
   });
 }
@@ -1852,21 +2212,208 @@ function applyMattressColor(hexColorStr) {
   Object.keys(meshMap).forEach(key => {
     const entry = meshMap[key];
     const name = entry.name.toLowerCase();
-    if (entry.visible && name.includes('mattress')) {
-      setColorOnMesh(entry.mesh, hex);
+    if (entry.visible && (name.includes('mattress') || name.includes('mattres') || name.includes('zipper') || name.includes('zip') || name.includes('cube.020'))) {
+      entry.meshes.forEach(mesh => setColorOnMesh(mesh, hex));
+    }
+  });
+}
+
+function applyAbsPanelColor(hexColorStr) {
+  if (!currentModel) return;
+  const hex = parseInt(hexColorStr.replace('#', '0x'), 16);
+
+  Object.keys(meshMap).forEach(key => {
+    const entry = meshMap[key];
+    const name = entry.name.toLowerCase();
+    
+    // Target ABS head/foot panels only
+    const isAbsPanel = (name.includes('abs') && (name.includes('head') || name.includes('foot') || name.includes('board') || name.includes('panel') || name.includes('end')));
+    
+    if (entry.visible && isAbsPanel) {
+      entry.meshes.forEach(mesh => {
+        if (!mesh.material) return;
+        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        materials.forEach(mat => {
+          const matName = mat.name.toLowerCase();
+          if (matName.includes('clr') || matName.includes('color') || matName.includes('blue') || matName.includes('red') || matName.includes('sticker')) {
+            const cloned = mat.clone();
+            if (cloned.color) {
+              cloned.color.setHex(hex);
+            }
+            if (cloned.emissive) {
+              cloned.emissive.setHex(0x000000);
+            }
+            cloned.needsUpdate = true;
+            if (Array.isArray(mesh.material)) {
+              const idx = mesh.material.indexOf(mat);
+              if (idx !== -1) mesh.material[idx] = cloned;
+            } else {
+              mesh.material = cloned;
+            }
+          }
+        });
+      });
+    }
+  });
+}
+
+function applyAbsRailColor(hexColorStr) {
+  if (!currentModel) return;
+  const hex = parseInt(hexColorStr.replace('#', '0x'), 16);
+
+  Object.keys(meshMap).forEach(key => {
+    const entry = meshMap[key];
+    const name = entry.name.toLowerCase();
+    
+    // Target ABS side rails only
+    const isAbsRail = (name.includes('abs') && (name.includes('rail') || name.includes('side')));
+    
+    if (entry.visible && isAbsRail) {
+      entry.meshes.forEach(mesh => {
+        if (!mesh.material) return;
+        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        materials.forEach(mat => {
+          const matName = mat.name.toLowerCase();
+          if (matName.includes('clr') || matName.includes('color') || matName.includes('blue') || matName.includes('red') || matName.includes('sticker') || matName.includes('siderailings-2')) {
+            const cloned = mat.clone();
+            if (cloned.color) {
+              cloned.color.setHex(hex);
+            }
+            if (cloned.emissive) {
+              cloned.emissive.setHex(0x000000);
+            }
+            cloned.needsUpdate = true;
+            if (Array.isArray(mesh.material)) {
+              const idx = mesh.material.indexOf(mat);
+              if (idx !== -1) mesh.material[idx] = cloned;
+            } else {
+              mesh.material = cloned;
+            }
+          }
+        });
+      });
+    }
+  });
+}
+
+function applyCouchCabinetColor(hexColorStr) {
+  if (!currentModel) return;
+  const hex = parseInt(hexColorStr.replace('#', '0x'), 16);
+
+  Object.keys(meshMap).forEach(key => {
+    const entry = meshMap[key];
+    const name = entry.name.toLowerCase();
+    
+    const isCabinet = name.includes('cabinet') || name.includes('cabin') || name.includes('footer') || name.includes('mini_drawer') || name.includes('mini-drawer');
+    
+    if (entry.visible && isCabinet) {
+      entry.meshes.forEach(mesh => setColorOnMesh(mesh, hex));
+    }
+  });
+}
+
+function applyCouchDrawerColor(hexColorStr) {
+  if (!currentModel) return;
+  const hex = parseInt(hexColorStr.replace('#', '0x'), 16);
+
+  Object.keys(meshMap).forEach(key => {
+    const entry = meshMap[key];
+    const name = entry.name.toLowerCase();
+    
+    const isDrawer = name.includes('drawer') || name.includes('cupboard');
+    const isMiniDrawer = name.includes('mini_drawer') || name.includes('mini-drawer');
+    
+    if (entry.visible && isDrawer && !isMiniDrawer) {
+      entry.meshes.forEach(mesh => setColorOnMesh(mesh, hex));
     }
   });
 }
 
 function setColorOnMesh(mesh, hex) {
   if (!mesh.material) return;
-  const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-  mats.forEach(mat => {
-    if (mat.color) {
-      mat.color.setHex(hex);
-      mat.needsUpdate = true;
+  
+  // Clone the material so changes are isolated to this specific mesh name only
+  if (Array.isArray(mesh.material)) {
+    mesh.material = mesh.material.map(mat => {
+      const cloned = mat.clone();
+      if (cloned.color) {
+        cloned.color.setHex(hex);
+      }
+      if (cloned.emissive) {
+        cloned.emissive.setHex(0x000000);
+      }
+      cloned.needsUpdate = true;
+      return cloned;
+    });
+  } else {
+    mesh.material = mesh.material.clone();
+    if (mesh.material.color) {
+      mesh.material.color.setHex(hex);
+    }
+    if (mesh.material.emissive) {
+      mesh.material.emissive.setHex(0x000000);
+    }
+    mesh.material.needsUpdate = true;
+  }
+}
+
+function focusOnCategory(category) {
+  if (!currentModel) return;
+  const box = new THREE.Box3();
+  
+  Object.keys(meshMap).forEach(key => {
+    const entry = meshMap[key];
+    const name = entry.name.toLowerCase();
+    
+    let match = false;
+    if (category === 'headfoot') {
+      match = name.includes('head') || name.includes('foot') || name.includes('board') || name.includes('panel') || name.includes('end');
+      if (name.includes('rail') || name.includes('side') || name.includes('mattress') || name.includes('mattres')) {
+        match = false;
+      }
+    } else if (category === 'siderails') {
+      match = name.includes('rail') || name.includes('side') || name.includes('collapsible') || name.includes('colapsable') || name.includes('ac-') || name.includes('ac_');
+    } else if (category === 'mattress') {
+      match = name.includes('mattress') || name.includes('mattres') || name.includes('zipper') || name.includes('zip') || name.includes('cube.020') || name.includes('plain') || name.includes('lather');
+      if (name.includes('panel') || name.includes('board') || name.includes('head') || name.includes('foot') || name.includes('end')) {
+        match = false;
+      }
+    } else if (category === 'cabinet') {
+      match = name.includes('cabinet') || name.includes('cupboard') || name.includes('cabin') || name.includes('footer');
+    } else if (category === 'drawer') {
+      match = name.includes('drawer') || name.includes('cupboard');
+    } else if (category === 'wheel') {
+      match = name.includes('wheel') || name.includes('castor') || name.includes('caster');
+    } else if (category === 'operation') {
+      match = name.includes('motor') || name.includes('remote') || name.includes('crank') || name.includes('manual') || name.includes('handle');
+    }
+    
+    if (entry.visible && match) {
+      entry.meshes.forEach(mesh => {
+        box.expandByObject(mesh);
+      });
     }
   });
+
+  if (box.isEmpty()) return;
+
+  const centre = box.getCenter(new THREE.Vector3());
+  const size   = box.getSize(new THREE.Vector3());
+  const maxSz  = Math.max(size.x, size.y, size.z);
+
+  if (!isFinite(maxSz) || maxSz === 0) return;
+
+  const fov  = camera.fov * (Math.PI / 180);
+  const dist = (maxSz / 2) / Math.tan(fov / 2) * 2.2;
+
+  const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+  if (dir.lengthSq() === 0) {
+    dir.set(0.6, 0.4, 1).normalize();
+  }
+
+  controls.target.copy(centre);
+  camera.position.copy(centre).addScaledVector(dir, dist);
+  controls.update();
 }
 
 // Setup configuration panel event listeners
@@ -1917,33 +2464,138 @@ if (customColorPicker && customColorSwatch) {
 // Mattress color swatches listeners
 document.querySelectorAll('.mattress-color').forEach(swatch => {
   swatch.addEventListener('click', (e) => {
-    if (swatch.id === 'mattress-custom-swatch') {
-      const picker = document.getElementById('mattress-custom-picker');
-      if (picker && e.target !== picker) {
-        picker.click();
-      }
-      return;
-    }
     document.querySelectorAll('.mattress-color').forEach(s => s.classList.remove('active'));
     swatch.classList.add('active');
     applyCurrentConfig();
   });
 });
 
-const mattressCustomPicker = document.getElementById('mattress-custom-picker');
-const mattressCustomSwatch = document.getElementById('mattress-custom-swatch');
-if (mattressCustomPicker && mattressCustomSwatch) {
-  const handleMattressCustomColor = (e) => {
+// Couch Cabinet color swatches listeners
+document.querySelectorAll('.couch-cabinet-color').forEach(swatch => {
+  swatch.addEventListener('click', (e) => {
+    if (swatch.id === 'couch-cabinet-custom-swatch') {
+      const picker = document.getElementById('couch-cabinet-custom-picker');
+      if (picker && e.target !== picker) {
+        picker.click();
+      }
+      return;
+    }
+    document.querySelectorAll('.couch-cabinet-color').forEach(s => s.classList.remove('active'));
+    swatch.classList.add('active');
+    applyCurrentConfig();
+  });
+});
+
+const couchCabinetCustomPicker = document.getElementById('couch-cabinet-custom-picker');
+const couchCabinetCustomSwatch = document.getElementById('couch-cabinet-custom-swatch');
+if (couchCabinetCustomPicker && couchCabinetCustomSwatch) {
+  const handleCouchCabinetCustomColor = (e) => {
     const hexColor = e.target.value;
-    mattressCustomSwatch.dataset.color = hexColor;
-    mattressCustomSwatch.style.background = hexColor;
+    couchCabinetCustomSwatch.dataset.color = hexColor;
+    couchCabinetCustomSwatch.style.background = hexColor;
     
-    document.querySelectorAll('.mattress-color').forEach(s => s.classList.remove('active'));
-    mattressCustomSwatch.classList.add('active');
+    document.querySelectorAll('.couch-cabinet-color').forEach(s => s.classList.remove('active'));
+    couchCabinetCustomSwatch.classList.add('active');
     applyCurrentConfig();
   };
-  mattressCustomPicker.addEventListener('input', handleMattressCustomColor);
-  mattressCustomPicker.addEventListener('change', handleMattressCustomColor);
+  couchCabinetCustomPicker.addEventListener('input', handleCouchCabinetCustomColor);
+  couchCabinetCustomPicker.addEventListener('change', handleCouchCabinetCustomColor);
+}
+
+// Couch Drawer color swatches listeners
+document.querySelectorAll('.couch-drawer-color').forEach(swatch => {
+  swatch.addEventListener('click', (e) => {
+    if (swatch.id === 'couch-drawer-custom-swatch') {
+      const picker = document.getElementById('couch-drawer-custom-picker');
+      if (picker && e.target !== picker) {
+        picker.click();
+      }
+      return;
+    }
+    document.querySelectorAll('.couch-drawer-color').forEach(s => s.classList.remove('active'));
+    swatch.classList.add('active');
+    applyCurrentConfig();
+  });
+});
+
+const couchDrawerCustomPicker = document.getElementById('couch-drawer-custom-picker');
+const couchDrawerCustomSwatch = document.getElementById('couch-drawer-custom-swatch');
+if (couchDrawerCustomPicker && couchDrawerCustomSwatch) {
+  const handleCouchDrawerCustomColor = (e) => {
+    const hexColor = e.target.value;
+    couchDrawerCustomSwatch.dataset.color = hexColor;
+    couchDrawerCustomSwatch.style.background = hexColor;
+    
+    document.querySelectorAll('.couch-drawer-color').forEach(s => s.classList.remove('active'));
+    couchDrawerCustomSwatch.classList.add('active');
+    applyCurrentConfig();
+  };
+  couchDrawerCustomPicker.addEventListener('input', handleCouchDrawerCustomColor);
+  couchDrawerCustomPicker.addEventListener('change', handleCouchDrawerCustomColor);
+}
+
+// ABS Panel color swatches listeners
+document.querySelectorAll('.abs-panel-color').forEach(swatch => {
+  swatch.addEventListener('click', (e) => {
+    if (swatch.id === 'abs-panel-custom-swatch') {
+      const picker = document.getElementById('abs-panel-custom-picker');
+      if (picker && e.target !== picker) {
+        picker.click();
+      }
+      return;
+    }
+    document.querySelectorAll('.abs-panel-color').forEach(s => s.classList.remove('active'));
+    swatch.classList.add('active');
+    applyCurrentConfig();
+  });
+});
+
+const absPanelCustomPicker = document.getElementById('abs-panel-custom-picker');
+const absPanelCustomSwatch = document.getElementById('abs-panel-custom-swatch');
+if (absPanelCustomPicker && absPanelCustomSwatch) {
+  const handleAbsPanelCustomColor = (e) => {
+    const hexColor = e.target.value;
+    absPanelCustomSwatch.dataset.color = hexColor;
+    absPanelCustomSwatch.style.background = hexColor;
+    
+    document.querySelectorAll('.abs-panel-color').forEach(s => s.classList.remove('active'));
+    absPanelCustomSwatch.classList.add('active');
+    applyCurrentConfig();
+  };
+  absPanelCustomPicker.addEventListener('input', handleAbsPanelCustomColor);
+  absPanelCustomPicker.addEventListener('change', handleAbsPanelCustomColor);
+}
+
+// ABS Rail color swatches listeners
+document.querySelectorAll('.abs-rail-color').forEach(swatch => {
+  swatch.addEventListener('click', (e) => {
+    if (swatch.id === 'abs-rail-custom-swatch') {
+      const picker = document.getElementById('abs-rail-custom-picker');
+      if (picker && e.target !== picker) {
+        picker.click();
+      }
+      return;
+    }
+    document.querySelectorAll('.abs-rail-color').forEach(s => s.classList.remove('active'));
+    swatch.classList.add('active');
+    applyCurrentConfig();
+  });
+});
+
+const absRailCustomPicker = document.getElementById('abs-rail-custom-picker');
+const absRailCustomSwatch = document.getElementById('abs-rail-custom-swatch');
+if (absRailCustomPicker && absRailCustomSwatch) {
+  const handleAbsRailCustomColor = (e) => {
+    const hexColor = e.target.value;
+    absRailCustomSwatch.dataset.color = hexColor;
+    absRailCustomSwatch.style.background = hexColor;
+    
+    document.querySelectorAll('.abs-rail-color').forEach(s => s.classList.remove('active'));
+    absRailCustomSwatch.classList.add('active');
+    applyCurrentConfig();
+  };
+  absRailCustomPicker.addEventListener('input', handleAbsRailCustomColor);
+  absRailCustomPicker.addEventListener('change', handleAbsRailCustomColor);
 }
 
 // Auto Rotate toggle listener
@@ -2069,7 +2721,7 @@ function onCanvasClick(event) {
 
     let matchedKey = null;
     for (const key in meshMap) {
-      if (meshMap[key].mesh === clickedMesh) {
+      if (meshMap[key].meshes.includes(clickedMesh)) {
         matchedKey = key;
         break;
       }
@@ -2263,6 +2915,9 @@ try {
   } else if (modelQuery.includes('hi-lo') || modelQuery.includes('hi_lo') || modelQuery.includes('hilo')) {
     defaultModel = 'images/models/Hi-lo structure-optimized.glb';
     productName = 'Hi-Lo Structure';
+  } else if (modelQuery.includes('couch') || modelQuery.includes('examination')) {
+    defaultModel = 'images/models/Deluxe exmaination couch-optimized.glb';
+    productName = 'Deluxe Examination Couch';
   } else if (modelQuery.includes('icu')) {
     defaultModel = 'images/models/ICU_cot-optimized.glb';
     productName = 'ICU Cot';
