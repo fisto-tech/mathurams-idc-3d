@@ -1047,15 +1047,15 @@
     <div class="config-section">
       <div class="config-section-title">A. Head & Foot End Panel</div>
       <div class="card-grid col-3">
-        <div class="config-card active" data-section="headfoot" data-value="m1">
+        <div class="config-card active" data-section="headfoot" data-value="ms">
           <div class="selection-indicator"></div>
-          <img src="images/ms-icon.webp" alt="M1" />
-          <span>M1 Panel</span>
+          <img src="images/ms-icon.webp" alt="MS" />
+          <span>MS Panel</span>
         </div>
-        <div class="config-card" data-section="headfoot" data-value="s3">
+        <div class="config-card" data-section="headfoot" data-value="ss">
           <div class="selection-indicator"></div>
-          <img src="images/ss-plain-icon.webp" alt="S3" />
-          <span>S3 Panel</span>
+          <img src="images/ss-plain-icon.webp" alt="SS" />
+          <span>SS Panel</span>
         </div>
         <div class="config-card" data-section="headfoot" data-value="abs">
           <div class="selection-indicator"></div>
@@ -1069,10 +1069,10 @@
     <div class="config-section">
       <div class="config-section-title">B. Side Rails</div>
       <div class="card-grid col-3">
-        <div class="config-card active" data-section="siderails" data-value="m4">
+        <div class="config-card active" data-section="siderails" data-value="ms">
           <div class="selection-indicator"></div>
-          <img src="images/ms-icon.webp" alt="M4" />
-          <span>M4 Rail</span>
+          <img src="images/ms-icon.webp" alt="MS" />
+          <span>MS Rail</span>
         </div>
         <div class="config-card" data-section="siderails" data-value="ssplain">
           <div class="selection-indicator"></div>
@@ -1419,7 +1419,7 @@ const infoBadge   = document.getElementById('info-badge');
 const fbxLoader  = new FBXLoader();
 const gltfLoader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
+dracoLoader.setDecoderPath('https://unpkg.com/three@0.128.0/examples/js/libs/draco/');
 gltfLoader.setDRACOLoader(dracoLoader);
 const objLoader  = new OBJLoader();
 
@@ -1432,7 +1432,7 @@ function loadModel(fileOrUrl, fileName) {
 
   loadingName.textContent = name;
   loadingEl.classList.add('visible');
-  initialHint.style.display = 'none';
+  if (initialHint) initialHint.style.display = 'none';
 
   if (currentModel) {
     scene.remove(currentModel);
@@ -1564,9 +1564,9 @@ function loadModel(fileOrUrl, fileName) {
 function getMeshIconSrc(name) {
   const lower = name.toLowerCase();
   if (lower.includes('abs')) return 'images/abs-icon.webp';
-  if (lower.includes('aluminium') || lower.includes('collapsible')) return 'images/aluminium-collapsible-icon.webp';
+  if (lower.includes('ss') && (lower.includes('collapsible') || lower.includes('colapsable'))) return 'images/ss-collapsible-icon.webp';
+  if (lower.includes('aluminium') || lower.includes('collapsible') || lower.includes('colapsable')) return 'images/aluminium-collapsible-icon.webp';
   if (lower.includes('ms') || lower.includes('m1') || lower.includes('m4')) return 'images/ms-icon.webp';
-  if (lower.includes('ss') && lower.includes('collapsible')) return 'images/ss-collapsible-icon.webp';
   if (lower.includes('ss') || lower.includes('plain')) return 'images/ss-plain-icon.webp';
   return null;
 }
@@ -1753,8 +1753,8 @@ function updateStats() {
 function applyCurrentConfig() {
   if (!currentModel) return;
 
-  const headfoot = document.querySelector('.config-card[data-section="headfoot"].active')?.dataset.value || 'm1';
-  const siderails = document.querySelector('.config-card[data-section="siderails"].active')?.dataset.value || 'm4';
+  const headfoot = document.querySelector('.config-card[data-section="headfoot"].active')?.dataset.value || 'ms';
+  const siderails = document.querySelector('.config-card[data-section="siderails"].active')?.dataset.value || 'ms';
   const mattress = document.querySelector('input[name="mattress"]:checked')?.value || 'zip';
   const wheel = document.querySelector('input[name="wheel"]:checked')?.value || 'without';
   const operation = document.querySelector('input[name="operation"]:checked')?.value || 'manual';
@@ -1768,9 +1768,9 @@ function applyCurrentConfig() {
 
     // Head / Foot panels matching
     if (name.includes('head') || name.includes('foot') || name.includes('board') || name.includes('panel') || name.includes('end')) {
-      if (headfoot === 'm1') {
+      if (headfoot === 'ms') {
         if (name.includes('s3') || name.includes('ss') || name.includes('abs')) visible = false;
-      } else if (headfoot === 's3') {
+      } else if (headfoot === 'ss') {
         if (name.includes('m1') || name.includes('ms') || name.includes('abs')) visible = false;
       } else if (headfoot === 'abs') {
         if (name.includes('m1') || name.includes('ms') || name.includes('s3') || name.includes('ss')) visible = false;
@@ -1778,17 +1778,20 @@ function applyCurrentConfig() {
     }
 
     // Side Rails matching
-    if (name.includes('rail') || name.includes('side')) {
-      if (siderails === 'm4') {
-        if (name.includes('ss') || name.includes('abs') || name.includes('aluminium') || name.includes('collapsible')) visible = false;
+    const isRailMesh = name.includes('rail') || name.includes('side') || name.includes('collapsible') || name.includes('colapsable');
+    if (isRailMesh) {
+      if (siderails === 'ms') {
+        if (name.includes('ss') || name.includes('abs') || name.includes('aluminium') || name.includes('collapsible') || name.includes('colapsable')) visible = false;
       } else if (siderails === 'ssplain') {
-        if (name.includes('m4') || name.includes('abs') || name.includes('aluminium') || name.includes('collapsible') || (name.includes('ss') && !name.includes('plain'))) visible = false;
+        if (name.includes('ms') || name.includes('abs') || name.includes('aluminium') || name.includes('collapsible') || name.includes('colapsable')) visible = false;
       } else if (siderails === 'abs') {
-        if (name.includes('m4') || name.includes('ss') || name.includes('aluminium') || name.includes('collapsible')) visible = false;
+        if (name.includes('ms') || name.includes('ss') || name.includes('aluminium') || name.includes('collapsible') || name.includes('colapsable')) visible = false;
       } else if (siderails === 'aluminium') {
-        if (name.includes('m4') || name.includes('ss') || name.includes('abs')) visible = false;
+        if (name.includes('ms') || name.includes('abs') || name.includes('ss') || !name.includes('aluminium')) visible = false;
       } else if (siderails === 'sscollapsible') {
-        if (name.includes('m4') || name.includes('plain') || name.includes('abs') || name.includes('aluminium')) visible = false;
+        if (name.includes('ms') || name.includes('abs') || name.includes('aluminium')) visible = false;
+        if (name.includes('ss') && !name.includes('collapsible') && !name.includes('colapsable')) visible = false;
+        if (!name.includes('ss')) visible = false;
       }
     }
 
@@ -2257,6 +2260,12 @@ try {
   } else if (modelQuery.includes('semi-fowler') || modelQuery.includes('semi_fowler')) {
     defaultModel = 'images/models/semi_fowler_cot-GLB1-optimized.glb';
     productName = 'Semi Fowler Cot';
+  } else if (modelQuery.includes('hi-lo') || modelQuery.includes('hi_lo') || modelQuery.includes('hilo')) {
+    defaultModel = 'images/models/Hi-lo structure-optimized.glb';
+    productName = 'Hi-Lo Structure';
+  } else if (modelQuery.includes('icu')) {
+    defaultModel = 'images/models/ICU_cot-optimized.glb';
+    productName = 'ICU Cot';
   }
 } catch (e) {
   console.warn('URL parsing fallback:', e);
