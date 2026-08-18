@@ -1429,7 +1429,6 @@ import { GLTFLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders
 import { DRACOLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/DRACOLoader.js';
 import { OBJLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/OBJLoader.js';
 import { GLTFExporter } from 'https://unpkg.com/three@0.128.0/examples/jsm/exporters/GLTFExporter.js';
-import { RGBELoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/RGBELoader.js';
 
 // ── Scene ────────────────────────────────────────────────────────────────────
 const canvas  = document.getElementById('three-canvas');
@@ -1459,11 +1458,11 @@ controls.autoRotateSpeed = 1.0;
 
 // ── Lights ───────────────────────────────────────────────────────────────────
 // HemisphereLight provides a natural sky/ground gradient light, avoiding flat shading or color tinting
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0xbbbbbb, 0.3);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0xbbbbbb, 0.95);
 scene.add(hemiLight);
 
 // Main shadow-casting light (reduced intensity to prevent washing out colors)
-const dirLight = new THREE.DirectionalLight(0xffffff, 0.2);
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.4);
 dirLight.position.set(8, 15, 10);
 dirLight.castShadow = true;
 dirLight.shadow.mapSize.set(2048, 2048);
@@ -1472,17 +1471,38 @@ dirLight.shadow.camera.far  = 500;
 scene.add(dirLight);
 
 // Headlight attached directly to camera to ensure visible faces always show the true/actual color
-const cameraLight = new THREE.DirectionalLight(0xffffff, 0.3);
+const cameraLight = new THREE.DirectionalLight(0xffffff, 0.9);
 cameraLight.position.set(1, 1, 2);
 camera.add(cameraLight);
 scene.add(camera);
 
 // ── Environment Map ─────────────────────────────────────────────────────────
-new RGBELoader()
-  .load('images/models/brown_photostudio_02_2k.hdr', function (texture) {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    scene.environment = texture;
-  });
+(function createDefaultEnvMap() {
+  const envScene = new THREE.Scene();
+  
+  const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+  envScene.add(ambient);
+  
+  const light1 = new THREE.DirectionalLight(0xffffff, 1.5);
+  light1.position.set(10, 20, 10);
+  envScene.add(light1);
+  
+  const light2 = new THREE.DirectionalLight(0xffffff, 1.0);
+  light2.position.set(-10, 10, -10);
+  envScene.add(light2);
+
+  const light3 = new THREE.DirectionalLight(0xffffff, 0.6);
+  light3.position.set(0, -10, 0);
+  envScene.add(light3);
+
+  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  pmremGenerator.compileEquirectangularShader();
+  
+  const envMap = pmremGenerator.fromScene(envScene).texture;
+  scene.environment = envMap;
+  
+  pmremGenerator.dispose();
+})();
 
 // ── Solid Floor ──────────────────────────────────────────────────────────────
 let floorColor = 0xFFFFFF;
