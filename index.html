@@ -1339,16 +1339,6 @@
       </label>
     </div>
 
-    <!-- Initial hint -->
-    <!-- <div id="initial-hint">
-      <svg class="hint-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="17 8 12 3 7 8"/>
-        <line x1="12" y1="3" x2="12" y2="15"/>
-      </svg>
-      <h2>Drop a 3D bed model here</h2>
-      <p>or click <strong>Load Model</strong> above</p>
-    </div> -->
 
     <!-- Drop zone overlay -->
     <div id="drop-zone">
@@ -1400,7 +1390,7 @@
         </svg>
       </button>
       <div class="hud-btn" title="Background color" style="position: relative;">
-        <input type="color" id="bg-color-picker" value="#c7c7c7" style="position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;" />
+        <input type="color" id="bg-color-picker" value="#F8FAFC" style="position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;" />
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
           <circle cx="12" cy="12" r="6" fill="currentColor"/>
@@ -1439,6 +1429,7 @@ import { GLTFLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders
 import { DRACOLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/DRACOLoader.js';
 import { OBJLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/OBJLoader.js';
 import { GLTFExporter } from 'https://unpkg.com/three@0.128.0/examples/jsm/exporters/GLTFExporter.js';
+import { RGBELoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/RGBELoader.js';
 
 // ── Scene ────────────────────────────────────────────────────────────────────
 const canvas  = document.getElementById('three-canvas');
@@ -1450,10 +1441,10 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
 renderer.outputEncoding    = THREE.sRGBEncoding;
 renderer.toneMapping       = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1;
+renderer.toneMappingExposure = 1.5;
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xc7c7c7);
+scene.background = new THREE.Color(0xF8FAFC);
 
 const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 10000);
 camera.position.set(5, 4, 7);
@@ -1467,9 +1458,12 @@ controls.autoRotate    = true;
 controls.autoRotateSpeed = 1.0;
 
 // ── Lights ───────────────────────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+// HemisphereLight provides a natural sky/ground gradient light, avoiding flat shading or color tinting
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0xbbbbbb, 0.3);
+scene.add(hemiLight);
 
-const dirLight = new THREE.DirectionalLight(0xffffff, 1.4);
+// Main shadow-casting light (reduced intensity to prevent washing out colors)
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.2);
 dirLight.position.set(8, 15, 10);
 dirLight.castShadow = true;
 dirLight.shadow.mapSize.set(2048, 2048);
@@ -1477,37 +1471,18 @@ dirLight.shadow.camera.near = 0.1;
 dirLight.shadow.camera.far  = 500;
 scene.add(dirLight);
 
-const fillLight = new THREE.DirectionalLight(0x4080ff, 0.35);
-fillLight.position.set(-5, 2, -5);
-scene.add(fillLight);
+// Headlight attached directly to camera to ensure visible faces always show the true/actual color
+const cameraLight = new THREE.DirectionalLight(0xffffff, 0.3);
+cameraLight.position.set(1, 1, 2);
+camera.add(cameraLight);
+scene.add(camera);
 
 // ── Environment Map ─────────────────────────────────────────────────────────
-(function createDefaultEnvMap() {
-  const envScene = new THREE.Scene();
-  
-  const ambient = new THREE.AmbientLight(0xffffff, 1.5);
-  envScene.add(ambient);
-  
-  const light1 = new THREE.DirectionalLight(0xffffff, 5);
-  light1.position.set(10, 20, 10);
-  envScene.add(light1);
-  
-  const light2 = new THREE.DirectionalLight(0xffffff, 3);
-  light2.position.set(-10, 10, -10);
-  envScene.add(light2);
-
-  const light3 = new THREE.DirectionalLight(0xffffff, 2);
-  light3.position.set(0, -10, 0);
-  envScene.add(light3);
-
-  const pmremGenerator = new THREE.PMREMGenerator(renderer);
-  pmremGenerator.compileEquirectangularShader();
-  
-  const envMap = pmremGenerator.fromScene(envScene).texture;
-  scene.environment = envMap;
-  
-  pmremGenerator.dispose();
-})();
+new RGBELoader()
+  .load('images/models/brown_photostudio_02_2k.hdr', function (texture) {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.environment = texture;
+  });
 
 // ── Solid Floor ──────────────────────────────────────────────────────────────
 let floorColor = 0xFFFFFF;
@@ -1525,6 +1500,14 @@ const axesHelper = new THREE.AxesHelper(1);
 // scene.add(axesHelper);
 
 // ── State ────────────────────────────────────────────────────────────────────
+let userColorsChanged = {
+  frame: false,
+  mattress: false,
+  absPanel: false,
+  absRail: false,
+  cabinet: false,
+  drawer: false
+};
 let currentModel    = null;
 let currentModelName = '';
 let meshMap         = {};        // key → { mesh, visible, name, triCount }
@@ -1602,6 +1585,8 @@ function loadModel(fileOrUrl, fileName) {
     productName = 'Deluxe Examination Couch';
   }
 
+
+
   const titleEl = document.getElementById('product-title');
   if (titleEl) {
     titleEl.textContent = productName;
@@ -1617,6 +1602,14 @@ function loadModel(fileOrUrl, fileName) {
   }
   meshMap       = {};
   selectedMesh  = null;
+  userColorsChanged = {
+    frame: false,
+    mattress: false,
+    absPanel: false,
+    absRail: false,
+    cabinet: false,
+    drawer: false
+  };
 
   const ext = name.split('.').pop().toLowerCase();
   let activeLoader = null;
@@ -1659,12 +1652,23 @@ function loadModel(fileOrUrl, fileName) {
     box.setFromObject(modelGroup);
     modelGroup.position.y -= box.min.y;
 
-    // Collect meshes + shadows
-    let totalTris = 0;
-    modelGroup.traverse((child) => {
-      if (!child.isMesh) return;
-      child.castShadow    = true;
-      child.receiveShadow = true;
+     // Collect meshes + shadows
+     let totalTris = 0;
+     modelGroup.traverse((child) => {
+       if (!child.isMesh) return;
+       child.castShadow    = true;
+       child.receiveShadow = true;
+       // Fix the incorrect metalness/roughness in the GLB for the ABS plastic railings
+       if (child.material) {
+         const materials = Array.isArray(child.material) ? child.material : [child.material];
+         materials.forEach(mat => {
+           if (false && mat.name && mat.name.toLowerCase() === 'abs_siderail') {
+             mat.metalness = 0.0;
+             mat.roughness = 0.45;
+             mat.needsUpdate = true;
+           }
+         });
+       }
 
       let triCount = 0;
       if (child.geometry) {
@@ -2159,15 +2163,15 @@ function applyCurrentConfig() {
     toggleMesh(key, visible);
   });
 
-  if (activeColor) applyColorToMeshes(activeColor);
-  if (activeMattressColor) applyMattressColor(activeMattressColor);
-  if (isAbsPanelSelected) {
+  if (activeColor && userColorsChanged.frame) applyColorToMeshes(activeColor);
+  if (activeMattressColor && userColorsChanged.mattress) applyMattressColor(activeMattressColor);
+  if (isAbsPanelSelected && userColorsChanged.absPanel) {
     const activeAbsPanelColor = document.querySelector('.color-swatch.abs-panel-color.active')?.dataset.color;
     if (activeAbsPanelColor) {
       applyAbsPanelColor(activeAbsPanelColor);
     }
   }
-  if (isAbsRailSelected) {
+  if (isAbsRailSelected && userColorsChanged.absRail) {
     const activeAbsRailColor = document.querySelector('.color-swatch.abs-rail-color.active')?.dataset.color;
     if (activeAbsRailColor) {
       applyAbsRailColor(activeAbsRailColor);
@@ -2175,11 +2179,11 @@ function applyCurrentConfig() {
   }
   if (isCouch) {
     const activeCouchCabinetColor = document.querySelector('.color-swatch.couch-cabinet-color.active')?.dataset.color;
-    if (activeCouchCabinetColor) {
+    if (activeCouchCabinetColor && userColorsChanged.cabinet) {
       applyCouchCabinetColor(activeCouchCabinetColor);
     }
     const activeCouchDrawerColor = document.querySelector('.color-swatch.couch-drawer-color.active')?.dataset.color;
-    if (activeCouchDrawerColor) {
+    if (activeCouchDrawerColor && userColorsChanged.drawer) {
       applyCouchDrawerColor(activeCouchDrawerColor);
     }
   }
@@ -2194,11 +2198,19 @@ function applyColorToMeshes(hexColorStr) {
     return;
   }
 
-  // General model coloring for frames/panels (excluding mattress)
+  // General model coloring for frames/panels (excluding mattress and ABS components)
   Object.keys(meshMap).forEach(key => {
     const entry = meshMap[key];
     const name = entry.name.toLowerCase();
-    if (entry.visible && !name.includes('mattress') && (name.includes('panel') || name.includes('rail') || name.includes('frame') || name.includes('board') || name.includes('head') || name.includes('foot') || name.includes('body') || name.includes('support'))) {
+    
+    // Check if it's a side rail mesh (using same classification as visibility logic)
+    const isRailMesh = name.includes('rail') || name.includes('side') || name.includes('collapsible') || name.includes('colapsable') || name.includes('ac-') || name.includes('ac_');
+    const isAbsRail = isRailMesh && !name.includes('ms') && !name.includes('ss') && !name.includes('aluminium') && !name.includes('collapsible') && !name.includes('colapsable') && !name.includes('ac-') && !name.includes('ac_');
+    
+    // Check if it's an ABS component (either explicitly named 'abs' or classified as an ABS rail)
+    const isAbs = name.includes('abs') || isAbsRail;
+
+    if (entry.visible && !name.includes('mattress') && !isAbs && (name.includes('panel') || name.includes('rail') || name.includes('frame') || name.includes('board') || name.includes('head') || name.includes('foot') || name.includes('body') || name.includes('support'))) {
       entry.meshes.forEach(mesh => setColorOnMesh(mesh, hex));
     }
   });
@@ -2441,6 +2453,7 @@ document.querySelectorAll('.color-swatch:not(.mattress-color)').forEach(swatch =
     }
     document.querySelectorAll('.color-swatch:not(.mattress-color)').forEach(s => s.classList.remove('active'));
     swatch.classList.add('active');
+    userColorsChanged.frame = true;
     applyCurrentConfig();
   });
 });
@@ -2455,6 +2468,7 @@ if (customColorPicker && customColorSwatch) {
     
     document.querySelectorAll('.color-swatch:not(.mattress-color)').forEach(s => s.classList.remove('active'));
     customColorSwatch.classList.add('active');
+    userColorsChanged.frame = true;
     applyCurrentConfig();
   };
   customColorPicker.addEventListener('input', handleCustomColor);
@@ -2466,6 +2480,7 @@ document.querySelectorAll('.mattress-color').forEach(swatch => {
   swatch.addEventListener('click', (e) => {
     document.querySelectorAll('.mattress-color').forEach(s => s.classList.remove('active'));
     swatch.classList.add('active');
+    userColorsChanged.mattress = true;
     applyCurrentConfig();
   });
 });
@@ -2482,6 +2497,7 @@ document.querySelectorAll('.couch-cabinet-color').forEach(swatch => {
     }
     document.querySelectorAll('.couch-cabinet-color').forEach(s => s.classList.remove('active'));
     swatch.classList.add('active');
+    userColorsChanged.cabinet = true;
     applyCurrentConfig();
   });
 });
@@ -2496,6 +2512,7 @@ if (couchCabinetCustomPicker && couchCabinetCustomSwatch) {
     
     document.querySelectorAll('.couch-cabinet-color').forEach(s => s.classList.remove('active'));
     couchCabinetCustomSwatch.classList.add('active');
+    userColorsChanged.cabinet = true;
     applyCurrentConfig();
   };
   couchCabinetCustomPicker.addEventListener('input', handleCouchCabinetCustomColor);
@@ -2514,6 +2531,7 @@ document.querySelectorAll('.couch-drawer-color').forEach(swatch => {
     }
     document.querySelectorAll('.couch-drawer-color').forEach(s => s.classList.remove('active'));
     swatch.classList.add('active');
+    userColorsChanged.drawer = true;
     applyCurrentConfig();
   });
 });
@@ -2528,6 +2546,7 @@ if (couchDrawerCustomPicker && couchDrawerCustomSwatch) {
     
     document.querySelectorAll('.couch-drawer-color').forEach(s => s.classList.remove('active'));
     couchDrawerCustomSwatch.classList.add('active');
+    userColorsChanged.drawer = true;
     applyCurrentConfig();
   };
   couchDrawerCustomPicker.addEventListener('input', handleCouchDrawerCustomColor);
@@ -2546,6 +2565,7 @@ document.querySelectorAll('.abs-panel-color').forEach(swatch => {
     }
     document.querySelectorAll('.abs-panel-color').forEach(s => s.classList.remove('active'));
     swatch.classList.add('active');
+    userColorsChanged.absPanel = true;
     applyCurrentConfig();
   });
 });
@@ -2560,6 +2580,7 @@ if (absPanelCustomPicker && absPanelCustomSwatch) {
     
     document.querySelectorAll('.abs-panel-color').forEach(s => s.classList.remove('active'));
     absPanelCustomSwatch.classList.add('active');
+    userColorsChanged.absPanel = true;
     applyCurrentConfig();
   };
   absPanelCustomPicker.addEventListener('input', handleAbsPanelCustomColor);
@@ -2578,6 +2599,7 @@ document.querySelectorAll('.abs-rail-color').forEach(swatch => {
     }
     document.querySelectorAll('.abs-rail-color').forEach(s => s.classList.remove('active'));
     swatch.classList.add('active');
+    userColorsChanged.absRail = true;
     applyCurrentConfig();
   });
 });
@@ -2592,6 +2614,7 @@ if (absRailCustomPicker && absRailCustomSwatch) {
     
     document.querySelectorAll('.abs-rail-color').forEach(s => s.classList.remove('active'));
     absRailCustomSwatch.classList.add('active');
+    userColorsChanged.absRail = true;
     applyCurrentConfig();
   };
   absRailCustomPicker.addEventListener('input', handleAbsRailCustomColor);
@@ -2916,7 +2939,7 @@ try {
     defaultModel = 'images/models/Hi-lo structure-optimized.glb';
     productName = 'Hi-Lo Structure';
   } else if (modelQuery.includes('couch') || modelQuery.includes('examination')) {
-    defaultModel = 'images/models/Deluxe exmaination couch-optimized.glb';
+    defaultModel = 'images/models/Deluxe exmaination couch1.glb';
     productName = 'Deluxe Examination Couch';
   } else if (modelQuery.includes('icu')) {
     defaultModel = 'images/models/ICU_cot-optimized.glb';
