@@ -1429,6 +1429,7 @@ import { GLTFLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders
 import { DRACOLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/DRACOLoader.js';
 import { OBJLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/OBJLoader.js';
 import { GLTFExporter } from 'https://unpkg.com/three@0.128.0/examples/jsm/exporters/GLTFExporter.js';
+import { RGBELoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/RGBELoader.js';
 
 // ── Scene ────────────────────────────────────────────────────────────────────
 const canvas  = document.getElementById('three-canvas');
@@ -1440,7 +1441,7 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
 renderer.outputEncoding    = THREE.sRGBEncoding;
 renderer.toneMapping       = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.5;
+renderer.toneMappingExposure = 1.0;
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xF8FAFC);
@@ -1458,11 +1459,11 @@ controls.autoRotateSpeed = 1.0;
 
 // ── Lights ───────────────────────────────────────────────────────────────────
 // HemisphereLight provides a natural sky/ground gradient light, avoiding flat shading or color tinting
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0xbbbbbb, 0.95);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0xbbbbbb, 0.45);
 scene.add(hemiLight);
 
 // Main shadow-casting light (reduced intensity to prevent washing out colors)
-const dirLight = new THREE.DirectionalLight(0xffffff, 1.4);
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.85);
 dirLight.position.set(8, 15, 10);
 dirLight.castShadow = true;
 dirLight.shadow.mapSize.set(2048, 2048);
@@ -1471,38 +1472,77 @@ dirLight.shadow.camera.far  = 500;
 scene.add(dirLight);
 
 // Headlight attached directly to camera to ensure visible faces always show the true/actual color
-const cameraLight = new THREE.DirectionalLight(0xffffff, 0.9);
+const cameraLight = new THREE.DirectionalLight(0xffffff, 0.4);
 cameraLight.position.set(1, 1, 2);
 camera.add(cameraLight);
 scene.add(camera);
 
 // ── Environment Map ─────────────────────────────────────────────────────────
+let defaultEnvMap = null;
+let hdrEnvMap = null;
+
 (function createDefaultEnvMap() {
   const envScene = new THREE.Scene();
   
-  const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+  const ambient = new THREE.AmbientLight(0xffffff, 0.35);
   envScene.add(ambient);
   
-  const light1 = new THREE.DirectionalLight(0xffffff, 1.5);
+  const light1 = new THREE.DirectionalLight(0xffffff, 0.5);
   light1.position.set(10, 20, 10);
   envScene.add(light1);
   
-  const light2 = new THREE.DirectionalLight(0xffffff, 1.0);
+  const light2 = new THREE.DirectionalLight(0xffffff, 0.3);
   light2.position.set(-10, 10, -10);
   envScene.add(light2);
 
-  const light3 = new THREE.DirectionalLight(0xffffff, 0.6);
+  const light3 = new THREE.DirectionalLight(0xffffff, 0.2);
   light3.position.set(0, -10, 0);
   envScene.add(light3);
 
   const pmremGenerator = new THREE.PMREMGenerator(renderer);
   pmremGenerator.compileEquirectangularShader();
   
-  const envMap = pmremGenerator.fromScene(envScene).texture;
-  scene.environment = envMap;
+  defaultEnvMap = pmremGenerator.fromScene(envScene).texture;
+  scene.environment = defaultEnvMap;
   
   pmremGenerator.dispose();
 })();
+
+function updateEnvironment(isCouch) {
+  if (isCouch) {
+    // Reduce direct scene lights when HDR is active to prevent double-lighting (which washes out colors)
+    hemiLight.intensity = 0.15;
+    dirLight.intensity = 0.25; // Keep low for soft shadows
+    cameraLight.intensity = 0.1;
+    
+    if (hdrEnvMap) {
+      scene.environment = hdrEnvMap;
+    } else {
+      const rgbeLoader = new RGBELoader();
+      rgbeLoader.setDataType(THREE.UnsignedByteType);
+      rgbeLoader.load('images/models/brown_photostudio_02_2k.hdr', (texture) => {
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
+        pmremGenerator.compileEquirectangularShader();
+        hdrEnvMap = pmremGenerator.fromEquirectangular(texture).texture;
+        pmremGenerator.dispose();
+        texture.dispose();
+        
+        const currentIsCouch = currentModelName.toLowerCase().includes('couch') || currentModelName.toLowerCase().includes('examination') || productName === 'Deluxe Examination Couch';
+        if (currentIsCouch) {
+          scene.environment = hdrEnvMap;
+        }
+      }, undefined, (err) => {
+        console.error('Error loading HDR environment map:', err);
+      });
+    }
+  } else {
+    // Restore default scene light intensities when HDR is not active
+    hemiLight.intensity = 0.45;
+    dirLight.intensity = 0.85;
+    cameraLight.intensity = 0.4;
+    scene.environment = defaultEnvMap;
+  }
+}
 
 // ── Solid Floor ──────────────────────────────────────────────────────────────
 let floorColor = 0xFFFFFF;
@@ -1756,6 +1796,8 @@ function loadModel(fileOrUrl, fileName) {
     // Hide/show sections dynamically based on model type
     const isIcu = name.toLowerCase().includes('icu') || productName === 'ICU Cot';
     const isCouch = name.toLowerCase().includes('couch') || name.toLowerCase().includes('examination') || productName === 'Deluxe Examination Couch';
+    
+    updateEnvironment(isCouch);
     
     const sectionHeadFoot = document.getElementById('config-section-headfoot');
     const sectionSideRails = document.getElementById('config-section-siderails');
@@ -2184,7 +2226,7 @@ function applyCurrentConfig() {
   });
 
   if (activeColor && userColorsChanged.frame) applyColorToMeshes(activeColor);
-  if (activeMattressColor && userColorsChanged.mattress) applyMattressColor(activeMattressColor);
+  if (activeMattressColor) applyMattressColor(activeMattressColor);
   if (isAbsPanelSelected && userColorsChanged.absPanel) {
     const activeAbsPanelColor = document.querySelector('.color-swatch.abs-panel-color.active')?.dataset.color;
     if (activeAbsPanelColor) {
@@ -2271,6 +2313,7 @@ function applyAbsPanelColor(hexColorStr) {
             const cloned = mat.clone();
             if (cloned.color) {
               cloned.color.setHex(hex);
+              cloned.color.convertSRGBToLinear();
             }
             if (cloned.emissive) {
               cloned.emissive.setHex(0x000000);
@@ -2310,6 +2353,7 @@ function applyAbsRailColor(hexColorStr) {
             const cloned = mat.clone();
             if (cloned.color) {
               cloned.color.setHex(hex);
+              cloned.color.convertSRGBToLinear();
             }
             if (cloned.emissive) {
               cloned.emissive.setHex(0x000000);
@@ -2370,6 +2414,7 @@ function setColorOnMesh(mesh, hex) {
       const cloned = mat.clone();
       if (cloned.color) {
         cloned.color.setHex(hex);
+        cloned.color.convertSRGBToLinear();
       }
       if (cloned.emissive) {
         cloned.emissive.setHex(0x000000);
@@ -2381,6 +2426,7 @@ function setColorOnMesh(mesh, hex) {
     mesh.material = mesh.material.clone();
     if (mesh.material.color) {
       mesh.material.color.setHex(hex);
+      mesh.material.color.convertSRGBToLinear();
     }
     if (mesh.material.emissive) {
       mesh.material.emissive.setHex(0x000000);
@@ -2462,7 +2508,7 @@ document.querySelectorAll('input[type="radio"]').forEach(radio => {
   radio.addEventListener('change', applyCurrentConfig);
 });
 
-document.querySelectorAll('.color-swatch:not(.mattress-color)').forEach(swatch => {
+document.querySelectorAll('.color-swatch:not(.mattress-color):not(.couch-cabinet-color):not(.couch-drawer-color):not(.abs-panel-color):not(.abs-rail-color)').forEach(swatch => {
   swatch.addEventListener('click', (e) => {
     if (swatch.id === 'custom-color-swatch') {
       const picker = document.getElementById('custom-color-picker');
@@ -2471,7 +2517,7 @@ document.querySelectorAll('.color-swatch:not(.mattress-color)').forEach(swatch =
       }
       return;
     }
-    document.querySelectorAll('.color-swatch:not(.mattress-color)').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.color-swatch:not(.mattress-color):not(.couch-cabinet-color):not(.couch-drawer-color):not(.abs-panel-color):not(.abs-rail-color)').forEach(s => s.classList.remove('active'));
     swatch.classList.add('active');
     userColorsChanged.frame = true;
     applyCurrentConfig();
@@ -2486,7 +2532,7 @@ if (customColorPicker && customColorSwatch) {
     customColorSwatch.dataset.color = hexColor;
     customColorSwatch.style.background = hexColor;
     
-    document.querySelectorAll('.color-swatch:not(.mattress-color)').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.color-swatch:not(.mattress-color):not(.couch-cabinet-color):not(.couch-drawer-color):not(.abs-panel-color):not(.abs-rail-color)').forEach(s => s.classList.remove('active'));
     customColorSwatch.classList.add('active');
     userColorsChanged.frame = true;
     applyCurrentConfig();
